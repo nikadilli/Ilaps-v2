@@ -1,0 +1,12 @@
+matplotlib
+numpy
+pandas
+patsy
+Pillow
+PySide2
+scikit-learn
+scipy
+sklearn
+statsmodels
+xlrd
+XlsxWriter
