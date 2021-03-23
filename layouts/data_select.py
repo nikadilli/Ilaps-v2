@@ -3,7 +3,6 @@ from PySide2.QtWidgets import *
 from PySide2 import QtGui
 from PySide2.QtCore import Qt
 from widgets.tab_select import SelectTab
-from side_functions import names_from_iolite
 
 import numpy as np
 

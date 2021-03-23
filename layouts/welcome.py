@@ -3,7 +3,6 @@ from PySide2.QtWidgets import *
 from PySide2 import QtGui
 from PySide2.QtCore import Qt
 
-from DataClass import MSData
 from widgets.pandas_model import PandasModel
 
 from xlrd import XLRDError

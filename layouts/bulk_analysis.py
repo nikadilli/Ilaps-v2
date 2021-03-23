@@ -197,6 +197,8 @@ class BulkAnalysis(QWidget):
         self.parent.Data.TS_correction(
             suma=self.suma, skip_isotopes=self.skip_isotopes)
 
+        print(self.parent.Data.param.ts_coef)
+
         # show data corrected by total sum
         model = PandasModel(self.parent.Data.corrected_TS)
         self.table.table['Total Sum'].setModel(model)
