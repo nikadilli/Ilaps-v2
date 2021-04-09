@@ -39,6 +39,8 @@ class ElemWindow(QMainWindow):
                             raise EndLoop
                         self.elemsChBxs.append(
                             QCheckBox(self.parent.parent.Data.isotope_names[idx]))
+                        if self.parent.parent.Data.isotope_names[idx] in self.parent.skip_isotopes:
+                            self.elemsChBxs[idx].setChecked(True)
                         self.elemLayout.addWidget(self.elemsChBxs[idx], i, j)
             except EndLoop:
                 pass
@@ -53,10 +55,20 @@ class ElemWindow(QMainWindow):
         self.sumaLbl = QLabel('Total sum [ppm]: ')
         self.sumaLayout.addWidget(self.sumaLbl, alignment=Qt.AlignLeft)
 
-        self.sumaEntry = QLineEdit('1000000')
+        self.sumaEntry = QLineEdit(str(self.parent.suma))
         self.sumaLayout.addWidget(self.sumaEntry, alignment=Qt.AlignLeft)
 
         self.sumaLayout.addStretch(1)
+
+        # oxide form setting
+        self.oxideWidget = QWidget()
+        self.oxideLayout = QHBoxLayout(self.oxideWidget)
+        self.mainLayout.addWidget(self.oxideWidget)
+
+        self.oxideBox = QCheckBox('keep oxide form')
+        if self.parent.oxide_form is True:
+            self.oxideBox.setChecked(True)
+        self.oxideLayout.addWidget(self.oxideBox)
 
         # control buttons
         self.buttonWidget = QWidget()
@@ -76,6 +88,7 @@ class ElemWindow(QMainWindow):
         self.parent.skip_isotopes = [el.text()
                                      for el in self.elemsChBxs if el.isChecked()]
         self.parent.suma = float(self.sumaEntry.text())
+        self.parent.oxide_form = self.oxideBox.isChecked()
 
         self.close()
 

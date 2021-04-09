@@ -6,7 +6,8 @@ class TabTable(QWidget):
         super().__init__(parent)
         self.layout = QVBoxLayout(self)
 
-        self.tabLst = {0: 'Raw', 1: 'Average', 2: 'Quantified', 3: 'Internal Std', 4: 'Total Sum'}
+        self.tabLst = {0: 'Raw', 1: 'Average',
+                       2: 'Quantified', 3: 'Internal Std', 4: 'Total Sum'}
         self.tabs = QTabWidget()
         self.tab = [QWidget() for _ in range(len(self.tabLst.keys()))]
         self.table = {}
@@ -28,5 +29,5 @@ class TabTable(QWidget):
     def return_tab(self):
         return self.tabLst[self.tabs.currentIndex()]
 
-
-
+    def show_tab(self, idx):
+        self.tabs.setCurrentIndex(idx)

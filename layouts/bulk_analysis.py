@@ -14,6 +14,7 @@ class BulkAnalysis(QWidget):
 
         self.suma = 1000000
         self.skip_isotopes = []
+        self.oxide_form = False
 
         self.mainWidget = QWidget()
         self.mainLayout = QVBoxLayout(self.mainWidget)
@@ -120,6 +121,7 @@ class BulkAnalysis(QWidget):
         # show average data
         model = PandasModel(self.parent.Data.means)
         self.table.table['Average'].setModel(model)
+        self.table.show_tab(1)
 
     def quantify(self):
         """
@@ -163,6 +165,8 @@ class BulkAnalysis(QWidget):
         model = PandasModel(self.parent.Data.quantified)
         self.table.table['Quantified'].setModel(model)
 
+        self.table.show_tab(2)
+
     def correctionIS(self):
         """
         Correct quantified values of MSData using internal standard correction
@@ -188,6 +192,7 @@ class BulkAnalysis(QWidget):
         model = PandasModel(
             self.parent.Data.corrected_IS[self.parent.Data.param.is_coef.columns[0]])
         self.table.table['Internal Std'].setModel(model)
+        self.table.show_tab(3)
 
     def correctionTS(self):
         """
@@ -195,13 +200,12 @@ class BulkAnalysis(QWidget):
         """
         # correct data
         self.parent.Data.TS_correction(
-            suma=self.suma, skip_isotopes=self.skip_isotopes)
-
-        print(self.parent.Data.param.ts_coef)
+            suma=self.suma, skip_isotopes=self.skip_isotopes, return_oxides=self.oxide_form)
 
         # show data corrected by total sum
         model = PandasModel(self.parent.Data.corrected_TS)
         self.table.table['Total Sum'].setModel(model)
+        self.table.show_tab(4)
 
     def report(self):
         # round all data
