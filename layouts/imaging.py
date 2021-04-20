@@ -167,13 +167,16 @@ class Imaging(QWidget):
         title = self.title.text()
         units = self.units.text()
 
-        if self.minz.text().isdigit():
-            vmin = int(self.minz.text())
+        s = self.minz.text()
+        if s.replace('.', '', 1).isdigit():
+            vmin = float(self.minz.text())
         else:
             vmin = None
 
-        if self.maxz.text().isdigit():
-            vmax = int(self.maxz.text())
+        s = self.maxz.text()
+        if s.replace('.', '', 1).isdigit():
+            vmax = float(self.maxz.text())
+            print(vmax)
         else:
             vmax = None
 
