@@ -8,6 +8,6 @@ scikit-learn
 scipy
 sklearn
 statsmodels
-xlrd
+xlrd==1.1
 XlsxWriter
 imgMS
