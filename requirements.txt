@@ -11,3 +11,4 @@ statsmodels
 xlrd
 XlsxWriter
 imgMS
+openpyxl
