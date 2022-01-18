@@ -6,6 +6,10 @@ from widgets.tab_table import TabTable
 from widgets.pandas_model import PandasModel
 from widgets.drop_elems_window import ElemWindow
 
+from imgMS import MSData as msd
+from imgMS import MSEval as mse
+from imgMS.side_functions import *
+
 
 class BulkAnalysis(QWidget):
     def __init__(self, parent):
@@ -127,6 +131,7 @@ class BulkAnalysis(QWidget):
         """
         Calculate quantified values of peaks for MSData
         """
+
         # get values
         std = self.standard.currentText()
         abltime = self.ablation.text()

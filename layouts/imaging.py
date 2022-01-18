@@ -176,7 +176,6 @@ class Imaging(QWidget):
         s = self.maxz.text()
         if s.replace('.', '', 1).isdigit():
             vmax = float(self.maxz.text())
-            print(vmax)
         else:
             vmax = None
 
