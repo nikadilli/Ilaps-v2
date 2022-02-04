@@ -2,9 +2,11 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2 import QtGui
 from PySide2.QtCore import Qt
+from PySide2.QtCore import QEventLoop
 from widgets.tab_table import TabTable
 from widgets.pandas_model import PandasModel
 from widgets.drop_elems_window import ElemWindow
+from widgets.stat_export_select import DataTableWindow
 
 from imgMS import MSData as msd
 from imgMS import MSEval as mse
@@ -19,6 +21,8 @@ class BulkAnalysis(QWidget):
         self.suma = 1000000
         self.skip_isotopes = []
         self.oxide_form = False
+
+        self.stat_export_table = None
 
         self.mainWidget = QWidget()
         self.mainLayout = QVBoxLayout(self.mainWidget)
@@ -56,30 +60,40 @@ class BulkAnalysis(QWidget):
         self.standard.addItems(['Select standard'])
         layout.addWidget(self.standard, 1, 4)
 
+        self.signaldriftBox = QCheckBox('Drift Correction')
+        layout.addWidget(self.signaldriftBox, 1, 5)
+
         self.averageBtn = QPushButton('Average')
-        layout.addWidget(self.averageBtn, 0, 5)
+        layout.addWidget(self.averageBtn, 0, 6)
         self.averageBtn.clicked.connect(self.average)
+
         self.quantifyBtn = QPushButton('Quantification')
-        layout.addWidget(self.quantifyBtn, 1, 5)
+        layout.addWidget(self.quantifyBtn, 1, 6)
         self.quantifyBtn.clicked.connect(self.quantify)
 
         self.intStdCor = QPushButton('Internal Std Correction')
-        layout.addWidget(self.intStdCor, 0, 6)
+        layout.addWidget(self.intStdCor, 0, 7)
         self.intStdCor.clicked.connect(self.correctionIS)
+
         self.totSumCor = QPushButton('Total Sum Correction')
-        layout.addWidget(self.totSumCor, 1, 6)
+        layout.addWidget(self.totSumCor, 1, 7)
         self.totSumCor.clicked.connect(self.correctionTS)
 
         self.tssettingsBtn = QPushButton('TS settings')
-        layout.addWidget(self.tssettingsBtn, 1, 7)
+        layout.addWidget(self.tssettingsBtn, 1, 8)
         self.tssettingsBtn.clicked.connect(self.elem_window)
 
         self.reportBtn = QPushButton('Report')
-        layout.addWidget(self.reportBtn, 0, 8)
+        layout.addWidget(self.reportBtn, 0, 9)
         self.reportBtn.clicked.connect(self.report)
+
         self.exportBtn = QPushButton('Export')
-        layout.addWidget(self.exportBtn, 1, 8)
+        layout.addWidget(self.exportBtn, 1, 9)
         self.exportBtn.clicked.connect(self.export)
+
+        self.exportstatsBtn = QPushButton('Export stats')
+        layout.addWidget(self.exportstatsBtn, 1, 10)
+        self.exportstatsBtn.clicked.connect(self.export_stats)
 
         layout.setAlignment(Qt.AlignLeft)
         layout.setSizeConstraint(QLayout.SetFixedSize)
@@ -159,8 +173,13 @@ class BulkAnalysis(QWidget):
             error_dialog.exec_()
             return
 
+        # check if using signal drift correction
+        drift = self.signaldriftBox.isChecked()
+        print(drift)
+
         # quantify data
-        self.parent.Data.quantify_isotopes(srm_name=std)
+        self.parent.Data.quantify_isotopes(
+            srm_name=std, drift_correction=drift)
 
         # calculate detection limit
         self.parent.Data.detection_limit(
@@ -237,6 +256,27 @@ class BulkAnalysis(QWidget):
         if filename:
             self.parent.Data.export(filename)
 
+    def export_stats(self):
+        # export data into excel in a formated style, containing means, sd, max and min for repeated samples
+
+        # get data table to export
+        window_to_open = DataTableWindow(self)
+        window_to_open.setAttribute(Qt.WA_DeleteOnClose)
+        window_to_open.show()
+
+        loop = QEventLoop()
+        window_to_open.destroyed.connect(loop.quit)
+        loop.exec_()
+
+        # get filename
+        filename, filters = QFileDialog.getSaveFileName(
+            self, 'Save file', '', 'All files (*.*);;Excel (*.xlsx, *.xls)')
+
+        # export data
+        self.parent.Data.formated_export(
+            filename, table=self.stat_export_table)
+
     def elem_window(self):
         window_to_open = ElemWindow(self)
+        window_to_open.setAttribute(Qt.WA_DeleteOnClose)
         window_to_open.show()

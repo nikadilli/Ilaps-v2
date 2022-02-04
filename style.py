@@ -28,6 +28,10 @@ IlapsStyle = """
                     background-color: rgb(51, 67, 83);
                     color: white; 
                     }
+            QRadioButton {
+                    background-color: rgb(51, 67, 83);
+                    color: white; 
+                    }
             QTabWidget::pane {
                             border: None;
                             }
