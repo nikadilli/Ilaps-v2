@@ -1,4 +1,4 @@
-pythonmatplotlib
+matplotlib
 numpy
 pandas
 patsy
