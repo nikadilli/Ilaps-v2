@@ -54,7 +54,7 @@ class Welcome(QWidget):
         self.analysisLayout.addWidget(self.lbl, 3, 0)
 
         self.instrument = QComboBox()
-        self.instrument.addItems(['raw', 'Agilent', 'Element'])
+        self.instrument.addItems(['raw', 'Agilent', 'Element', 'MC Nu-Sapphire'])
         self.analysisLayout.addWidget(self.instrument, 3, 1)
 
         self.lbl = QLabel('Import Parameters')

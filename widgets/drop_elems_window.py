@@ -35,7 +35,7 @@ class ElemWindow(QMainWindow):
                 for i in range(10):
                     for j in range(10):
                         idx = i*10 + j
-                        if idx == elems_nr - 1:
+                        if idx == elems_nr:
                             raise EndLoop
                         self.elemsChBxs.append(
                             QCheckBox(self.parent.parent.Data.isotope_names[idx]))

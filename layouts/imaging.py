@@ -7,8 +7,12 @@ from matplotlib.backends.backend_qt5agg import (
     FigureCanvas, NavigationToolbar2QT as NavigationToolbar)
 from matplotlib.figure import Figure
 import pandas as pd
-
+import matplotlib
+import matplotlib.pyplot as plt
 from imgMS import MSData as msd
+from imgMS import MSStats as mss
+
+from widgets.interactive_graph_window import GraphWindow
 
 
 class Imaging(QWidget):
@@ -89,6 +93,10 @@ class Imaging(QWidget):
         self.HflipBtn = QPushButton('HFlip')
         layout2.addWidget(self.HflipBtn)
         self.HflipBtn.clicked.connect(self.hflip)
+
+        self.AreaStatsBtn = QPushButton('Area Stats')
+        layout2.addWidget(self.AreaStatsBtn)
+        self.AreaStatsBtn.clicked.connect(self.areastats)
 
         layout2.addStretch(1)
 
@@ -205,6 +213,11 @@ class Imaging(QWidget):
         elem = self.element.currentText()
         self.parent.Data.isotopes[elem].elmap.flip(axis=1)
         self.image()
+
+    def areastats(self):
+        window_to_open = GraphWindow(self)
+        window_to_open.setAttribute(Qt.WA_DeleteOnClose)
+        window_to_open.show()      
 
     def import_matrix(self):
         # get file
