@@ -24,7 +24,7 @@ for file in files:
     
     IA = MSStats.InteractiveAverage(d)
     
-    if elem is not None:
+    if elem:
         IA.switch_elem(elem)
     if v and v.isdigit:
         vmax = int(v)
